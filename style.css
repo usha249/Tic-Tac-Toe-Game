@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient to bottom right, #2c3e50, #34495e; /* Darker, modern background */
+    margin: 0;
+    overflow: hidden; /* Prevent scroll if content is slightly larger */
+    color: #ecf0f1; /* Light text color */
+}
+
+.container {
+    background: rgba(44, 62, 80, 0.9); /* Slightly transparent dark background */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* More pronounced shadow */
+    text-align: center;
+    transform: scale(0.95); /* Slightly scale down for initial load effect */
+    animation: fadeInScale 0.8s forwards ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+h1 {
+    font-family: 'Fredoka One', cursive; /* Fun, bold font for title */
+    color: #f1c40f; /* Vibrant yellow */
+    margin-bottom: 25px;
+    font-size: 3em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#status {
+    margin-bottom: 30px;
+    font-size: 1.4em;
+    color: #bdc3c7; /* Lighter grey for status */
+    min-height: 1.4em; /* Prevent layout shift when text changes */
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 110px); /* Slightly larger cells */
+    grid-template-rows: repeat(3, 110px);
+    gap: 10px; /* Larger gap between cells */
+    width: 350px; /* Adjust width based on new cell size and gap */
+    height: 350px; /* Adjust height */
+    margin: 0 auto 30px auto;
+    border-radius: 10px;
+    overflow: hidden; /* Important for border-radius on cells */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background: #34495e; /* Match container background */
+}
+
+.cell {
+    width: 110px;
+    height: 110px;
+    background-color: #ecf0f1; /* Off-white for cells */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Fredoka One', cursive; /* Use fun font for X/O */
+    font-size: 4.5em; /* Larger X/O */
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px; /* Rounded corners for cells */
+    transition: background-color 0.3s ease, transform 0.15s ease-out;
+    position: relative; /* For win animation overlay */
+}
+
+.cell:hover:not(.X):not(.O) { /* Only hover if not already played */
+    background-color: #bdc3c7; /* Darker on hover */
+    transform: scale(1.03); /* Slight grow effect */
+}
+
+.cell.X {
+    color: #e74c3c; /* Bright red for X */
+    animation: popIn 0.3s ease-out forwards;
+}
+
+.cell.O {
+    color: #3498db; /* Bright blue for O */
+    animation: popIn 0.3s ease-out forwards;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Win animation styles */
+.cell.winning-cell {
+    animation: pulseGlow 1.2s infinite alternate; /* Pulsing glow for winning cells */
+    background-color: #27ae60 !important; /* Green background for winning cells */
+    color: white !important;
+}
+
+@keyframes pulseGlow {
+    from {
+        box-shadow: 0 0 0px 0px rgba(46, 204, 113, 0.7); /* Green glow */
+    }
+    to {
+        box-shadow: 0 0 20px 5px rgba(46, 204, 113, 0.7);
+    }
+}
+
+
+#restartButton {
+    padding: 12px 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #f1c40f; /* Yellow button */
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.1s ease-out;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+#restartButton:hover {
+    background-color: #f39c12; /* Darker yellow on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+#restartButton:active {
+    transform: translateY(0); /* Press effect */
+}
+
+/* Confetti effect (optional, advanced) */
+.confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allows clicks to pass through */
+    z-index: 1000;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #f1c40f; /* Yellow */
+    opacity: 0;
+    animation: confettiFall 3s forwards ease-out;
+    border-radius: 50%; /* Make them circles */
+    transform-origin: center;
+}
+
+/* Confetti colors for variety */
+.confetti:nth-child(2n) { background-color: #e74c3c; } /* Red */
+.confetti:nth-child(3n) { background-color: #3498db; } /* Blue */
+.confetti:nth-child(4n) { background-color: #2ecc71; } /* Green */
+
+@keyframes confettiFall {
+    0% { transform: translate(var(--x-start), var(--y-start)) rotate(0deg) scale(0); opacity: 0; }
+    10% { opacity: 1; transform: translate(var(--x-start), var(--y-start)) rotate(var(--rotation-start)) scale(1); }
+    100% { transform: translate(var(--x-end), var(--y-end)) rotate(var(--rotation-end)) scale(0.7); opacity: 0; }
+}
